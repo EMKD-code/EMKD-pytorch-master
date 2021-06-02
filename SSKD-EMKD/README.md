@@ -1,4 +1,4 @@
-# SSKD
+# SSKD-EMKD
 This repo covers the implementation of Capacity Exploration and Knowledge Maximizationfor Knowledge Distillation.
 
 This project is based on the [SSKD project](https://github.com/xuguodong03/SSKD).

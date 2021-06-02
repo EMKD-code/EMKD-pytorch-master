@@ -1,4 +1,4 @@
-# RepDistiller
+# CRD-EMKD
 
 This repo covers the implementation of Capacity Exploration and Knowledge Maximizationfor Knowledge Distillation.
 
