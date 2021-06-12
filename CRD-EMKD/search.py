@@ -120,7 +120,7 @@ def parse_option():
     # hint layer
     parser.add_argument('--hint_layer', default=2, type=int, choices=[0, 1, 2, 3, 4])
 
-    # mlkd hyper-parameter:
+    # mc hyper-parameter:
     parser.add_argument('--B1_weight', type=float, default=1.0)
     parser.add_argument('--B2_weight', type=float, default=1.0)
     parser.add_argument('--B3_weight', type=float, default=1.0)
@@ -155,10 +155,6 @@ def parse_option():
     #opt.model_t = get_teacher_name(opt.path_t)
     print('teacher: ', opt.model_t)
     print('student:{}, arch:{}'.format(opt.model_s, opt.block_depth))
-    if opt.mc:
-        print('distill method: {}_mc'.format(opt.distill))
-    else:
-        print('distill method:', opt.distill)
 
     # opt.model_name = 'S:{}_T:{}_{}_{}_r:{}_a:{}_b:{}_{}'.format(opt.model_s, opt.model_t, opt.dataset, opt.distill, opt.gamma, opt.alpha, opt.beta, opt.trial)
     if opt.mc:
@@ -458,7 +454,7 @@ def train_search(opt):
                 'model': model_s.state_dict(),
                 'accuracy': test_acc,
             }
-            if opt.distill == "crd_mlkd":
+            if opt.mc:
                 save_file = os.path.join(opt.save_folder, '{B1}_{B2}_{B3}_ckpt_epoch_{epoch}.pth'.format(B1=opt.B1_weight, B2=opt.B2_weight, B3=opt.B3_weight, epoch=epoch))
             else:
                 save_file = os.path.join(opt.save_folder, 'ckpt_epoch_{epoch}.pth'.format(epoch=epoch))
@@ -512,11 +508,14 @@ def search():
     while z >= 1 and y <= y_t:
         opt.block_depth = [x, y, z]
         print("Searching:{}, architecture:{}".format(opt.model_s, opt.block_depth))
-        if opt.distill == 'crd_mlkd':
+        if opt.mc:
             opt.B1_weight = original_depth / float(x)
             opt.B2_weight = original_depth / float(y)
             opt.B3_weight = original_depth / float(z)
+            print("B1:{}, B2:{}, B3:{}".format(opt.B1_weight, opt.B2_weight, opt.B3_weight))
         acc = train_search(opt)
+        #acc = random.randint(0,100)
+        #print("Searching:{}, architecture:{},{},{}, acc:{}".format(opt.model_s, x, y, z, acc))
         print("Searching:{}, architecture:{}, acc:{}".format(opt.model_s, opt.block_depth, acc))
         if acc > best_acc:
             best_acc = acc
@@ -532,11 +531,14 @@ def search():
     while y >= 1 and x <= x_t:
         opt.block_depth = [x, y, z]
         print("Searching:{}, architecture:{}".format(opt.model_s, opt.block_depth))
-        if opt.distill == 'crd_mlkd':
+        if opt.mc:
             opt.B1_weight = original_depth / float(x)
             opt.B2_weight = original_depth / float(y)
             opt.B3_weight = original_depth / float(z)
+            print("B1:{}, B2:{}, B3:{}".format(opt.B1_weight, opt.B2_weight, opt.B3_weight))
         acc = train_search(opt)
+        #acc = random.randint(0,100)
+        #print("Searching:{}, architecture:{},{},{}, acc:{}".format(opt.model_s, x, y, z, acc))
         print("Searching:{}, architecture:{}, acc:{}".format(opt.model_s, opt.block_depth, acc))
         if acc > best_acc:
             best_acc = acc
