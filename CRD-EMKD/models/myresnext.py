@@ -133,6 +133,16 @@ class myCifarResNeXt(nn.Module):
         else:
             return x 
 
+    def get_feat_modules(self):
+        feat_m = nn.ModuleList([])
+        feat_m.append(self.conv_1_3x3)
+        feat_m.append(self.bn_1)
+        feat_m.append(nn.ReLU(inplace=True))
+        feat_m.append(self.stage_1)
+        feat_m.append(self.stage_2)
+        feat_m.append(self.stage_3)
+        return feat_m
+
 '''
 def resnext(**kwargs):
     """Constructs a ResNeXt.
