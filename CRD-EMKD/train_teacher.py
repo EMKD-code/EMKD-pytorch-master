@@ -125,7 +125,7 @@ def main():
 
     # model
     #model = model_dict[opt.model](num_classes=n_cls)
-    if opt.model_s[0:8] == 'myresnet' or opt.model_s[0:5] == 'mywrn' or opt.model_s[0:9] == 'myresnext' or opt.model_s[0:8]=='myResNet':
+    if opt.model_t[0:8] == 'myresnet' or opt.model_t[0:5] == 'mywrn' or opt.model_t[0:9] == 'myresnext' or opt.model_t[0:8]=='myResNet':
         model = model_dict[opt.model](num_classes=n_cls, block_depth=opt.block_depth)
     else:    
         model = model_dict[opt.model](num_classes=n_cls)
