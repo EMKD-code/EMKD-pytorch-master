@@ -109,11 +109,13 @@ def main():
     opt = parse_option()
 
     # dataloader
+    n_cls = 0
     if opt.dataset == 'cifar100':
         train_loader, val_loader = get_cifar100_dataloaders(batch_size=opt.batch_size, num_workers=opt.num_workers)
         n_cls = 100
     elif opt.dataset == 'cifar10':
         train_loader, val_loader = get_cifar10_dataloaders(batch_size=opt.batch_size, num_workers=opt.num_workers)
+        n_cls = 10
     elif opt.dataset == 'imagenet':
         train_loader, val_loader = get_imagenet_dataloader(batch_size=opt.batch_size, num_workers=opt.num_workers, is_instance=False)
         n_cls = 1000
@@ -125,7 +127,7 @@ def main():
 
     # model
     #model = model_dict[opt.model](num_classes=n_cls)
-    if opt.model_t[0:8] == 'myresnet' or opt.model_t[0:5] == 'mywrn' or opt.model_t[0:9] == 'myresnext' or opt.model_t[0:8]=='myResNet':
+    if opt.model[0:8] == 'myresnet' or opt.model[0:5] == 'mywrn' or opt.model[0:9] == 'myresnext' or opt.model[0:8]=='myResNet':
         model = model_dict[opt.model](num_classes=n_cls, block_depth=opt.block_depth)
     else:    
         model = model_dict[opt.model](num_classes=n_cls)
